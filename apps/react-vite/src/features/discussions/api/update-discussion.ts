@@ -46,3 +46,27 @@ export const useUpdateDiscussion = ({
     mutationFn: updateDiscussion,
   });
 };
+
+const x = 10;
+const y = 10;
+const z = x + y;
+
+const arr = [ 10, 20, 30, 40 ];
+
+const obj = {
+	a: {
+		b: {
+			c: true,
+		},
+	},
+};
+
+const sum = ( a, b ) => a + b;
+
+function mul( a: number, b: number ) {
+	return a * b;
+}
+
+sum( 10, 20 );
+
+export {};
