@@ -69,4 +69,15 @@ function mul( a: number, b: number ) {
 
 sum( 10, 20 );
 
+const t = ( a, b ) => {
+	const c = () => 10;
+	return {
+		a,
+		b,
+		c,
+		d: () => 10,
+	};
+};
+
+
 export {};
