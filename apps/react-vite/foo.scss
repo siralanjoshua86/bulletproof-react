@@ -1,0 +1,341 @@
+// -----------------------------------------------------------
+// 1. SCSS Variables
+// -----------------------------------------------------------
+
+// Colors
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$text-color: #333;
+$background-color: #f8f9fa;
+$border-color: #dee2e6;
+
+// Typography
+$font-family-base: "Arial", sans-serif;
+$font-size-base: 16px;
+$line-height-base: 1.5;
+
+// Spacing
+$spacing-unit: 8px;
+$padding-small: $spacing-unit;
+$padding-medium: $spacing-unit * 2;
+$padding-large: $spacing-unit * 3;
+
+// Breakpoints (for responsive design)
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// -----------------------------------------------------------
+// 2. SCSS Functions
+// -----------------------------------------------------------
+
+/// Converts pixels to rem units.
+/// @param {Number} $pixels - The pixel value to convert.
+/// @param {Number} $base-font-size [16] - The base font size in pixels.
+/// @return {Number} The rem value.
+@function pxToRem($pixels, $base-font-size: 16) {
+	@return ($pixels / $base-font-size) * 1rem;
+}
+
+/// Calculates the contrast color for a given background color.
+/// @param {Color} $color - The background color.
+/// @return {Color} Black or white, depending on contrast.
+@function getContrastColor($color) {
+	@if (lightness($color) > 50%) {
+		@return #000; // Black
+	} @else {
+		@return #fff; // White
+	}
+}
+
+// -----------------------------------------------------------
+// 3. SCSS Mixins
+// -----------------------------------------------------------
+
+/// Center content using flexbox.
+/// @param {String} $direction [row] - Flex direction.
+@mixin flex-center($direction: row) {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: $direction;
+}
+
+/// Responsive media query mixin.
+/// @param {String} $breakpoint - The breakpoint name (e.g., 'sm', 'md', 'lg').
+@mixin media-up($breakpoint) {
+	@if map-has-key($breakpoints, $breakpoint) {
+		@media (min-width: map-get($breakpoints, $breakpoint)) {
+			@content;
+		}
+	} @else {
+		@error "Breakpoint `#{$breakpoint}` not found in $breakpoints map.";
+	}
+}
+
+/// Creates a simple button style.
+/// @param {Color} $bg-color - Background color of the button.
+/// @param {Color} $text-color - Text color of the button.
+@mixin button-style($bg-color: $primary-color, $text-color: #fff) {
+	padding: pxToRem(10) pxToRem(20);
+	border: 1px solid $bg-color;
+	border-radius: 4px;
+	background-color: $bg-color;
+	color: $text-color;
+	font-size: pxToRem(14);
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
+
+	&:hover {
+		background-color: darken($bg-color, 10%);
+	}
+}
+
+// -----------------------------------------------------------
+// 4. SCSS Placeholders (for @extend)
+// -----------------------------------------------------------
+
+%base-element {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+%responsive-img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+// -----------------------------------------------------------
+// 5. SCSS Imports (Example - assuming these files exist)
+// -----------------------------------------------------------
+
+// @import 'base/reset';        // Resets default browser styles
+// @import 'components/buttons';  // Button styles
+// @import 'layout/header';     // Header layout
+// @import 'pages/home';        // Page-specific styles
+
+// -----------------------------------------------------------
+// 6. SCSS Base Styles & Global Utilities
+// -----------------------------------------------------------
+
+body {
+	// @extend %base-element; // Inherit base box-sizing, margin, padding
+	// font-family: $font-family-base;
+	// font-size: $font-size-base;
+	// line-height: $line-height-base;
+	// color: $text-color;
+	// background-color: $background-color;
+}
+
+a {
+	color: $primary-color;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+// Utility classes
+.u-text-center {
+	text-align: center;
+}
+
+.u-margin-top-md {
+	margin-top: $padding-medium;
+}
+
+// -----------------------------------------------------------
+// 7. SCSS Nesting & Component Structure
+// -----------------------------------------------------------
+
+.container {
+	max-width: $breakpoint-lg;
+	margin: 0 auto;
+	padding: $padding-medium;
+	background-color: #fff;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+	h1 {
+		color: $primary-color;
+		margin-bottom: $padding-medium;
+		text-align: center;
+	}
+
+	.button-group {
+		@include flex-center();
+		gap: $spacing-unit; // CSS gap property
+
+		// Using mixin for primary button
+		.btn-primary {
+			@include button-style(
+				$primary-color,
+				getContrastColor($primary-color)
+			);
+		}
+
+		// Using mixin for secondary button
+		.btn-secondary {
+			@include button-style(
+				$secondary-color,
+				getContrastColor($secondary-color)
+			);
+		}
+
+		// Extending a placeholder for a ghost button
+		.btn-ghost {
+			@extend .btn-primary; // Inherit padding, border-radius, font-size, etc.
+			background-color: transparent;
+			color: $primary-color;
+			border-color: $primary-color;
+
+			&:hover {
+				background-color: $primary-color;
+				color: getContrastColor($primary-color);
+			}
+		}
+	}
+
+	.content-section {
+		padding: $padding-large;
+		border: 1px solid $border-color;
+		margin-top: $padding-large;
+
+		p {
+			line-height: 1.6;
+			margin-bottom: $spacing-unit * 1.5;
+		}
+
+		.image-wrapper {
+			width: 100%;
+			img {
+				@extend %responsive-img;
+				border-radius: 4px;
+			}
+		}
+	}
+}
+
+// -----------------------------------------------------------
+// 8. SCSS Control Directives (@if, @each, @for, @while)
+// -----------------------------------------------------------
+
+// Example with @if and @else if
+.theme-switcher {
+	background-color: $background-color;
+	padding: $padding-small;
+	border: 1px solid $border-color;
+
+	&.is-dark {
+		background-color: #333;
+		color: #fff;
+		border-color: #555;
+	}
+	&.is-light {
+		// Already covered by default
+	}
+}
+
+// Example with @each for generating utility classes
+$spacings: (
+	xs: $spacing-unit / 2,
+	sm: $spacing-unit,
+	md: $spacing-unit * 2,
+	lg: $spacing-unit * 3,
+);
+
+@each $key, $value in $spacings {
+	.margin-#{$key} {
+		margin: $value;
+	}
+	.padding-#{$key} {
+		padding: $value;
+	}
+}
+
+// Example with @for for generating grid columns
+@for $i from 1 through 12 {
+	.col-#{$i} {
+		width: (100% / 12) * $i;
+		float: left; // Basic grid
+	}
+}
+
+// Example with @while (less common for generating structure, more for calculations)
+// Not typically used for direct CSS output in this manner, but for demonstrating.
+// For example, generating a series of shadows:
+@while $i <= 5 {
+	.shadow-#{$i} {
+		box-shadow: 0 #{$i * 1px} #{$i * 2px} rgba(0, 0, 0, 0.1 * $i);
+	}
+	$i: $i + 1;
+}
+
+// -----------------------------------------------------------
+// 9. Responsive Adjustments using Mixin
+// -----------------------------------------------------------
+
+.responsive-element {
+	font-size: pxToRem(14);
+	padding: $padding-small;
+
+	@include media-up(md) {
+		font-size: pxToRem(18);
+		padding: $padding-medium;
+		.container {
+			max-width: $breakpoint-lg; // Example: adjust container width
+		}
+	}
+
+	@include media-up(lg) {
+		font-size: pxToRem(20);
+		padding: $padding-large;
+		.container {
+			max-width: $breakpoint-xl;
+		}
+	}
+}
+
+// -----------------------------------------------------------
+// 10. Maps (Used internally by mixins/functions but can be standalone)
+// -----------------------------------------------------------
+
+$breakpoints: (
+	sm: 576px,
+	md: 768px,
+	lg: 992px,
+	xl: 1200px,
+);
+
+$palette: (
+	"primary": $primary-color,
+	"secondary": $secondary-color,
+	"success": #28a745,
+	"danger": #dc3545,
+);
+
+// Example usage of a map
+@each $name, $color in $palette {
+	.bg-#{$name} {
+		background-color: $color;
+		color: getContrastColor($color);
+	}
+}
+
+// -----------------------------------------------------------
+// 11. Silent Comments (not outputted in compiled CSS)
+// -----------------------------------------------------------
+
+/* This is a multi-line CSS comment. It will appear in the compiled CSS. */
+// This is a single-line SCSS comment. It will NOT appear in the compiled CSS.
+
+// -----------------------------------------------------------
+// End of SCSS Code Structure Types
+// -----------------------------------------------------------
