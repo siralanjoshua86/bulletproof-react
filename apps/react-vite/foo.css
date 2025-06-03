@@ -1,0 +1,175 @@
+/* 1. Type (Element) Selector */
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	color: #333;
+}
+
+/* 2. Class Selector */
+.container {
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 20px;
+	background-color: #f0f0f0;
+}
+
+.button {
+	display: inline-block;
+	padding: 10px 20px;
+	background-color: #007bff;
+	color: white;
+	text-decoration: none;
+	border-radius: 5px;
+}
+
+/* 3. ID Selector */
+#header {
+	background-color: #333;
+	color: white;
+	padding: 15px;
+	text-align: center;
+}
+
+#main-content {
+	padding: 30px;
+	line-height: 1.6;
+}
+
+/* 4. Attribute Selector */
+a[target="_blank"] {
+	color: orange;
+}
+
+input[type="text"] {
+	border: 1px solid #ccc;
+	padding: 8px;
+}
+
+/* 5. Descendant Selector (space) */
+.navbar a {
+	color: white;
+	text-decoration: none;
+	margin-right: 15px;
+}
+
+/* 6. Child Selector (>) */
+ul > li {
+	list-style: none;
+	margin-bottom: 5px;
+}
+
+/* 7. Adjacent Sibling Selector (+) */
+h2 + p {
+	margin-top: 5px;
+	font-style: italic;
+}
+
+/* 8. General Sibling Selector (~) */
+h2 ~ p {
+	color: #555;
+}
+
+/* 9. Universal Selector (*) */
+* {
+	box-sizing: border-box; /* Applies to all elements */
+}
+
+/* 10. Pseudo-classes */
+a:hover {
+	text-decoration: underline;
+}
+
+input:focus {
+	border-color: #007bff;
+	outline: none;
+}
+
+li:nth-child(even) {
+	background-color: #eee;
+}
+
+p:first-of-type {
+	font-weight: bold;
+}
+
+/* 11. Pseudo-elements */
+p::first-line {
+	font-weight: bold;
+}
+
+p::before {
+	content: "Note: ";
+	color: red;
+}
+
+/* 12. Combinations (Chaining, Grouping) */
+.button.primary {
+	/* Chaining classes */
+	background-color: #28a745;
+}
+
+h1,
+h2,
+h3 {
+	/* Grouping selectors */
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+/* 13. @import Rule (typically at the top of the file or in another CSS file) */
+/* @import url("another-stylesheet.css"); */
+
+/* 14. @media Rule (Responsive Design) */
+@media screen and (max-width: 768px) {
+	.container {
+		padding: 10px;
+	}
+	.navbar a {
+		display: block;
+		text-align: center;
+		margin: 5px 0;
+	}
+}
+
+@media print {
+	body {
+		font-size: 10pt;
+	}
+	#header,
+	.button {
+		display: none; /* Hide elements when printing */
+	}
+}
+
+/* 15. @keyframes Rule (Animations) */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.animated-element {
+	animation: fadeIn 1s ease-in-out forwards;
+}
+
+/* 16. CSS Variables (Custom Properties) */
+:root {
+	--primary-color: #007bff;
+	--secondary-color: #6c757d;
+	--spacing-unit: 10px;
+}
+
+.card {
+	background-color: white;
+	border: 1px solid var(--secondary-color);
+	padding: calc(var(--spacing-unit) * 2);
+	margin-bottom: var(--spacing-unit);
+	color: var(--primary-color);
+}
